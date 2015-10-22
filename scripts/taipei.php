@@ -25,6 +25,9 @@ $apiUrl = 'https://www.openstreetmap.org/api/0.6/way';
 
 $fc = new stdClass();
 $fc->type = 'FeatureCollection';
+$fc->properties = array(
+    'missing' => array(),
+);
 $fc->features = array();
 
 $fh = fopen($basePath . '/data/taipei.csv', 'r');
@@ -49,9 +52,10 @@ while ($line = fgetcsv($fh, 2048)) {
     }
     echo "{$tmpFile}\n";
     $results = json_decode(file_get_contents($tmpFile), true);
-    $osmLines = array();
+    $osmLines = $osmId = array();
     foreach ($results AS $node) {
         if ($node['osm_type'] === 'way') {
+            $osmId[] = $node['osm_id'];
             $tmpXml = $path . '/' . $node['osm_id'] . '.xml';
             if (!file_exists($tmpXml)) {
                 echo "getting {$node['osm_id']}\n";
@@ -86,8 +90,11 @@ while ($line = fgetcsv($fh, 2048)) {
             'title' => $line1,
             'meters' => intval($line[2]),
             'bolts' => intval($line[3]),
+            'osm_id' => implode(',', $osmId),
         );
         $fc->features[] = $f;
+    } else {
+        $fc->properties['missing'][] = $line1;
     }
 }
 fclose($fh);
