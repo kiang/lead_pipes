@@ -62,15 +62,24 @@ while ($line = fgetcsv($fh, 2048)) {
                 file_put_contents($tmpXml, file_get_contents($apiUrl . "/{$node['osm_id']}/full"));
             }
             $p = xml_parser_create();
-            xml_parse_into_struct($p, file_get_contents($tmpXml), $vals);
+            xml_parse_into_struct($p, file_get_contents($tmpXml), $vals, $index);
             xml_parser_free($p);
-            $points = array();
-            foreach ($vals AS $val) {
-                if (isset($val['attributes']['LAT'])) {
-                    $points[] = new Point($val['attributes']['LON'], $val['attributes']['LAT']);
+            $linePoints = $points = array();
+            if (!empty($index['NODE'])) {
+                foreach ($index['NODE'] AS $nIdx) {
+                    if (isset($vals[$nIdx]['attributes']['LAT'])) {
+                        $points[$vals[$nIdx]['attributes']['ID']] = new Point($vals[$nIdx]['attributes']['LON'], $vals[$nIdx]['attributes']['LAT']);
+                    }
                 }
             }
-            $osmLines[] = new LineString($points);
+            if (!empty($index['ND'])) {
+                foreach ($index['ND'] AS $ndIdx) {
+                    if (isset($vals[$ndIdx]['attributes']['REF'])) {
+                        $linePoints[] = $points[$vals[$ndIdx]['attributes']['REF']];
+                    }
+                }
+            }
+            $osmLines[] = new LineString($linePoints);
         }
     }
     if (!empty($osmLines)) {
