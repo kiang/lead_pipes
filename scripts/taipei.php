@@ -99,7 +99,7 @@ while ($line = fgetcsv($fh, 2048)) {
         }
         $fc->features[] = $f;
     } else {
-        $fc->properties['missing'][] = $line1;
+        $fc->properties['missing'][] = "{$line1} ({$line[2]}公尺, {$line[3]}個栓)";
     }
 }
 fclose($fh);
