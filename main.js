@@ -11,7 +11,8 @@ function initialize() {
     });
 
     $.getJSON('data/taipei.json', function (data) {
-        roads = map.data.addGeoJson(data);
+        roads = data;
+        map.data.addGeoJson(roads);
     });
 
     map.data.addListener('mouseover', function (event) {
@@ -21,10 +22,35 @@ function initialize() {
         $('#content').html('<div>' + title + '</div>').removeClass('text-muted');
     });
 
+    map.data.addListener('click', function (event) {
+        var osmId = event.feature.getProperty('osm_id').split(',');
+        var body = '<div>鉛管長度： ' + event.feature.getProperty('meters') + ' 公尺</div>';
+        body += '<div>水栓數量： ' + event.feature.getProperty('bolts') + ' 個</div>';
+        body += '<div>OpenStreetMap 圖資：<ul>';
+        for (k in osmId) {
+            body += '<li><a href="http://www.openstreetmap.org/way/' + osmId[k] + '" target="_blank">' + osmId[k] + '</a></li>';
+        }
+        body += '</ul></div>';
+        $('#pipeModalLabel').html(event.feature.getProperty('title'));
+        $('#pipeModalBody').html(body);
+        $('#pipeModal').modal('show');
+    });
+
     map.data.addListener('mouseout', function (event) {
         map.data.revertStyle();
         $('#content').html('在地圖上滑動可以顯示資訊').addClass('text-muted');
     });
+
+    if (roads.properties.missing) {
+        var note = '<li>下面資料配對失敗而無法在地圖呈現<ul>';
+        for (k in roads.properties.missing) {
+            note += '<li>' + roads.properties.missing[k] + '</li>';
+        }
+        note += '</ul></li>';
+        $('ul', $('#dangerBody')).append(note);
+    }
+
+
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

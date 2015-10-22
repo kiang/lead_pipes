@@ -11,12 +11,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
         <style>
-            html, body {
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-            }
             #map-canvas {
                 height: 100%;
                 width: 100%;
@@ -53,7 +47,7 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title">注意事項</h3>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body" id="dangerBody">
                                 <ul>
                                     <li>目前是依據台北市自來水鉛管清冊中的道路名稱繪製，僅為方便檢索清冊資訊</li>
                                     <li>資料透過 <a href="http://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">OpenStreetMap Nominatim</a> 進行配對，預期會有闕漏情況</li>
@@ -78,8 +72,19 @@
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="//maps.googleapis.com/maps/api/js?v=3"></script>
         <script src="main.js"></script>
+        <div class="modal fade" id="pipeModal" tabindex="-1" role="dialog" aria-labelledby="pipeModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="pipeModalLabel"></h4>
+                    </div>
+                    <div class="modal-body" id="pipeModalBody"></div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
