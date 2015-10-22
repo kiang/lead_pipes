@@ -74,24 +74,20 @@ while ($line = fgetcsv($fh, 2048)) {
         }
     }
     if (!empty($osmLines)) {
-        $unionLine = false;
-        foreach ($osmLines AS $osmLine) {
-            if (false === $unionLine) {
-                $unionLine = $osmLine;
-            } else {
-                $unionLine->union($osmLine);
-            }
-        }
-
         $f = new stdClass();
         $f->type = 'Feature';
-        $f->geometry = json_decode($unionLine->out('json'));
         $f->properties = array(
             'title' => $line1,
             'meters' => intval($line[2]),
             'bolts' => intval($line[3]),
             'osm_id' => implode(',', $osmId),
         );
+        $f->geometry = new stdClass();
+        $f->geometry->type = 'GeometryCollection';
+        $f->geometry->geometries = array();
+        foreach ($osmLines AS $osmLine) {
+            $f->geometry->geometries[] = json_decode($osmLine->out('json'));
+        }
         $fc->features[] = $f;
     } else {
         $fc->properties['missing'][] = $line1;
