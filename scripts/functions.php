@@ -13,7 +13,11 @@ function extractLines($xml) {
                         return array();
                     }
                     break;
-                default:
+                case 'name:zh':
+                    if (false !== strpos($vals[$nIdx]['attributes']['V'], '巷')) {
+                        return array();
+                    }
+                    break;
             }
         }
     }
