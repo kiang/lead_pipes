@@ -61,7 +61,10 @@ while ($line = fgetcsv($fh, 2048)) {
                 echo "getting {$node['osm_id']}\n";
                 file_put_contents($tmpXml, file_get_contents($apiUrl . "/{$node['osm_id']}/full"));
             }
-            $osmLines[] = new LineString(extractLines(file_get_contents($tmpXml)));
+            $points = extractLines(file_get_contents($tmpXml));
+            if (!empty($points)) {
+                $osmLines[] = new LineString($points);
+            }
         }
     }
     if (!empty($osmLines)) {
