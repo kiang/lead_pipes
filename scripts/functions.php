@@ -18,6 +18,11 @@ function extractLines($xml) {
                         return array();
                     }
                     break;
+                case 'addr:full':
+                    if (false !== strpos($vals[$nIdx]['attributes']['V'], '號') || false !== strpos($vals[$nIdx]['attributes']['V'], '巷')) {
+                        return array();
+                    }
+                    break;
             }
         }
     }
