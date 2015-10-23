@@ -8,6 +8,7 @@
  */
 $basePath = dirname(__DIR__);
 include_once($basePath . '/libs/geoPHP/geoPHP.inc');
+include_once(__DIR__ . '/functions.php');
 
 $tmpPath = $basePath . '/tmp';
 if (!file_exists($tmpPath)) {
@@ -60,25 +61,7 @@ while ($line = fgetcsv($fh, 2048)) {
                 echo "getting {$node['osm_id']}\n";
                 file_put_contents($tmpXml, file_get_contents($apiUrl . "/{$node['osm_id']}/full"));
             }
-            $p = xml_parser_create();
-            xml_parse_into_struct($p, file_get_contents($tmpXml), $vals, $index);
-            xml_parser_free($p);
-            $linePoints = $points = array();
-            if (!empty($index['NODE'])) {
-                foreach ($index['NODE'] AS $nIdx) {
-                    if (isset($vals[$nIdx]['attributes']['LAT'])) {
-                        $points[$vals[$nIdx]['attributes']['ID']] = new Point($vals[$nIdx]['attributes']['LON'], $vals[$nIdx]['attributes']['LAT']);
-                    }
-                }
-            }
-            if (!empty($index['ND'])) {
-                foreach ($index['ND'] AS $ndIdx) {
-                    if (isset($vals[$ndIdx]['attributes']['REF'])) {
-                        $linePoints[] = $points[$vals[$ndIdx]['attributes']['REF']];
-                    }
-                }
-            }
-            $osmLines[] = new LineString($linePoints);
+            $osmLines[] = new LineString(extractLines(file_get_contents($tmpXml)));
         }
     }
     if (!empty($osmLines)) {
