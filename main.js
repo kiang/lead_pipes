@@ -1,4 +1,4 @@
-var map, overlays, roads, currentOverlayIndex = 0, markers = [], infowindow = new google.maps.InfoWindow();
+var map, overlays, roads = {}, currentOverlayIndex = 0, markers = [], infowindow = new google.maps.InfoWindow();
 $.ajaxSetup({async: false});
 
 function initialize() {
@@ -11,8 +11,13 @@ function initialize() {
     });
 
     $.getJSON('data/taipei.json', function (data) {
-        roads = data;
-        map.data.addGeoJson(roads);
+        roads.taipei = data;
+        map.data.addGeoJson(roads.taipei);
+    });
+
+    $.getJSON('data/new_taipei.json', function (data) {
+        roads.new_taipei = data;
+        map.data.addGeoJson(roads.new_taipei);
     });
 
     map.data.addListener('mouseover', function (event) {
@@ -41,10 +46,13 @@ function initialize() {
         $('#content').html('在地圖上滑動可以顯示資訊').addClass('text-muted');
     });
 
-    if (roads.properties.missing) {
+    if (roads.taipei.properties.missing || roads.new_taipei.properties.missing) {
         var note = '<li>下面資料配對失敗而無法在地圖呈現<ul>';
-        for (k in roads.properties.missing) {
-            note += '<li>' + roads.properties.missing[k] + '</li>';
+        for (k in roads.taipei.properties.missing) {
+            note += '<li>' + roads.taipei.properties.missing[k] + '</li>';
+        }
+        for (k in roads.new_taipei.properties.missing) {
+            note += '<li>' + roads.new_taipei.properties.missing[k] + '</li>';
         }
         note += '</ul></li>';
         $('ul', $('#dangerBody')).append(note);
