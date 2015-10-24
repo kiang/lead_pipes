@@ -39,6 +39,16 @@
                 <div id="map-canvas" class="col-md-12"></div>
                 <div id="detail" class="col-md-12">
                     <div class="col-md-8 col-sm-12 col-xs-12">
+                        <div style="float: right;">快速定位
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-default" onclick="map.setCenter({lat: 25.053699, lng: 121.507837});
+                                        return false">台北</a>
+                                <a href="#" class="btn btn-default" onclick="map.setCenter({lat: 24.752504, lng: 121.771097});
+                                        return false">宜蘭</a>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
                         <h2 class="text-muted">
                             <span class="col-md-12" id="content">在地圖上滑動或點選以顯示數據</span>
                         </h2>
@@ -64,10 +74,13 @@
                 </div>
             </div>
             <div style="text-align: center;">
-                <a href="https://github.com/kiang/lead_pipes" target="_blank">網站原始碼</a> | 
-                <a href="https://gist.github.com/audreyt/435dd6f7996ea7547f41" target="_blank">資料來源</a> | 
-                <a href="http://www.water.gov.tw/06news/news_b_main.asp?no_n=1931" target="_blank">台水公司說明</a> | 
-                <a href="http://www.water.gov.taipei/ct.asp?xItem=127401280&CtNode=85025&mp=114001" target="_blank">北水處鉛管專區</a>
+                <a href="https://github.com/kiang/lead_pipes" target="_blank">網站原始碼</a>
+                 | <a href="http://www.water.gov.tw/06news/news_b_main.asp?no_n=1931" target="_blank">台水公司說明</a>
+                 | <a href="http://www.water.gov.taipei/ct.asp?xItem=127401280&CtNode=85025&mp=114001" target="_blank">北水處鉛管專區</a>
+                 | <a href="https://gist.github.com/audreyt/435dd6f7996ea7547f41" target="_blank">台北市資料來源</a>
+                 | <a href="http://www.wrs.ntpc.gov.tw/web/News?command=showDetail&postId=345562" target="_blank">新北市資料來源</a>
+                 | <a href="http://www.e-land.gov.tw/ct.asp?xItem=62039&ctNode=890&mp=4" target="_blank">宜蘭縣資料來源</a>
+                
             </div>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
